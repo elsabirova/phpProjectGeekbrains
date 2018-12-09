@@ -85,9 +85,9 @@ class Db {
     /**
      * @param $sql
      * @param array $params
-     * @return array
+     * @return object
      */
     public function queryOneRow($sql, $params = []) {
-        return $this->queryAllRows($sql, $params);
+        return $this->queryAllRows($sql, $params)[0];
     }
 }
