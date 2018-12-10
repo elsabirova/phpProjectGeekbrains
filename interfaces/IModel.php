@@ -1,9 +1,11 @@
 <?php
 namespace app\interfaces;
-interface IModel {
-    public function getTableName();
+use app\models\Model;
 
-    public function getOneRow($id);
+interface IModel {
+    public function getTableName() : string;
+
+    public function getOneRow($id) : Model;
 
     public function getAllRows();
 }

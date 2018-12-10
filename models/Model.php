@@ -5,7 +5,8 @@ namespace app\models;
 use app\interfaces\IModel;
 use app\services\Db;
 
-abstract class Model implements IModel {
+abstract class Model implements IModel
+{
     protected $db;
 
     /**
@@ -15,51 +16,59 @@ abstract class Model implements IModel {
         $this->db = Db::getInstance();
     }
 
+
     /**
      * @param $id
-     * @return array
+     * @return Model
      */
-    public function getOneRow($id) {
+    public function getOneRow($id) : Model
+    {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE id = :id";
 
-        return $this->db->queryOneRow($sql, [':id' => $id]);
+        return $this->db->queryObject($sql, get_called_class(), [':id' => $id]);
     }
 
     /**
-     * @return array
+     * @return Model[]
      */
     public function getAllRows() {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName}";
 
-        return $this->db->queryAllRows($sql);
+        return $this->db->queryAllRows($sql, get_called_class());
     }
 
     /**
-     * @param $data = ['name'=>'Rosa','price'=>'3000','img'=>'1','category_id'=>'2'];
      * @return int
      */
-    public function createRow($data) {
+    public function insert()
+    {
         $tableName = $this->getTableName();
-        $keys = array_keys($data);
-        $fields = '`' . implode('`, `', $keys) . '`';
+        $fields = [];
+        $placeholders = [];
+        $params = [];
+        foreach ($this as $key => $value) {
+            if($key != 'db') {
+                $fields[] = $key;
+                $placeholders[] = '?';
+                $params[] = $value;
+            }
+        }
 
-        $placeholder = substr(str_repeat('?,', count($keys)), 0, -1);
+        $fields = implode(', ', $fields);
+        $placeholders = implode(', ', $placeholders);
 
-        $sql = "INSERT INTO {$tableName} ($fields) VALUES($placeholder)";
-
-        $params = array_values($data);
+        $sql = "INSERT INTO {$tableName} ($fields) VALUES($placeholders)";
 
         return $this->db->execute($sql, $params);
     }
 
     /**
-     * @param $id
      * @param $data
      * @return int
      */
-    public function updateRow($id, $data) {
+    public function update($data) {
         $tableName = $this->getTableName();
 
         $placeholder = [];
@@ -71,19 +80,18 @@ abstract class Model implements IModel {
         $sql = "UPDATE {$tableName} SET $placeholder WHERE id = ?";
 
         $params = array_values($data);
-        $params[] = $id;
+        $params[] = $this->id;
 
         return $this->db->execute($sql, $params);
     }
 
     /**
-     * @param $id
      * @return int
      */
-    public function deleteRow($id) {
+    public function delete() {
         $tableName = $this->getTableName();
         $sql = "DELETE FROM {$tableName} WHERE id=:id";
 
-        return $this->db->execute($sql, [':id' => $id]);
+        return $this->db->execute($sql, [':id' => $this->id]);
     }
 }
