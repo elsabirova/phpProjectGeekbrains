@@ -1,13 +1,18 @@
 <?php
 namespace app\services;
-class Autoloader {
-    public function loadClass($classname) {
-        $classname = str_replace("app", '', $classname);
-        $classname = str_replace("\\", '/', $classname);
 
-        $filename = ROOT_DIR . "{$classname}.php";
-        if (file_exists($filename)) {
-            include $filename;
+class Autoloader {
+    private $fileExtension = '.php';
+
+    /**
+     * @param $className
+     */
+    public function loadClass($className) {
+        $fileName = str_replace(['app', '\\'], [ROOT_DIR, '/'], $className);
+        $fileName .= $this->fileExtension;
+
+        if (file_exists($fileName)) {
+            include $fileName;
         }
     }
 }
