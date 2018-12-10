@@ -21,30 +21,36 @@ abstract class Model implements IModel
      * @param $id
      * @return Model
      */
-    public function getOneRow($id) : Model
+    public static function getOneRow($id) : Model
     {
-        $tableName = $this->getTableName();
+        $tableName = static::getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE id = :id";
 
-        return $this->db->queryObject($sql, get_called_class(), [':id' => $id]);
+        return Db::getInstance()->queryObject($sql, get_called_class(), [':id' => $id]);
     }
+
 
     /**
      * @return Model[]
      */
-    public function getAllRows() {
-        $tableName = $this->getTableName();
+    public static function getAllRows() {
+        $tableName = static::getTableName();
         $sql = "SELECT * FROM {$tableName}";
 
-        return $this->db->queryAllRows($sql, get_called_class());
+        return Db::getInstance()->queryAllRows($sql, get_called_class());
     }
+
+    public function save() {
+        // TODO: Implement save() method.
+    }
+
 
     /**
      * @return int
      */
     public function insert()
     {
-        $tableName = $this->getTableName();
+        $tableName = static::getTableName();
         $fields = [];
         $placeholders = [];
         $params = [];
@@ -68,11 +74,11 @@ abstract class Model implements IModel
      * @param $data
      * @return int
      */
-    public function update($data) {
-        $tableName = $this->getTableName();
+    public function update() {
+        $tableName = static::getTableName();
 
         $placeholder = [];
-        foreach ($data as $key => $value) {
+        /*foreach ($data as $key => $value) {
             $placeholder[] = $key . ' = ?';
         }
         $placeholder = implode(', ', $placeholder);
@@ -82,7 +88,7 @@ abstract class Model implements IModel
         $params = array_values($data);
         $params[] = $this->id;
 
-        return $this->db->execute($sql, $params);
+        return $this->db->execute($sql, $params);*/
     }
 
     /**

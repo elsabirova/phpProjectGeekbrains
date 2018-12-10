@@ -1,5 +1,4 @@
 <?php
-
 namespace app\models;
 
 class User extends Model
@@ -8,7 +7,7 @@ class User extends Model
     public $login;
     public $password;
 
-    public function getTableName() : string
+    public static function getTableName() : string
     {
         return "users";
     }

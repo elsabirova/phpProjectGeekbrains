@@ -4,7 +4,7 @@ include ROOT_DIR . "services/Autoloader.php";
 
 spl_autoload_register([new \app\services\Autoloader(), 'loadClass']);
 
-$good1 = (new \app\models\Good())->getOneRow(6);
+$good1 = \app\models\Good::getOneRow(6);
 
 $user1 = new \app\models\User();
 

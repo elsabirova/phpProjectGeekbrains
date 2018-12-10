@@ -1,5 +1,4 @@
 <?php
-
 namespace app\models;
 
 class Good extends Model {
@@ -31,7 +30,7 @@ class Good extends Model {
     }
 
 
-    public function getTableName() : string
+    public static function getTableName() : string
     {
         return "goods";
     }
