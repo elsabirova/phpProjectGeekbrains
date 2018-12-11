@@ -1,7 +1,7 @@
 <?php
 namespace app\services;
 
-use app\models\Model;
+use app\models\Record;
 use app\traits\TSingleton;
 
 class Db
@@ -81,9 +81,9 @@ class Db
      * @param $sql
      * @param $class
      * @param array $params
-     * @return Model
+     * @return Record
      */
-    public function queryObject($sql, $class, $params = []) : Model
+    public function queryObject($sql, $class, $params = [])
     {
         $pdoStatement = $this->query($sql, $params);
         $pdoStatement->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $class);
@@ -94,7 +94,7 @@ class Db
      * @param $sql
      * @param $class
      * @param array $params
-     * @return Model[]
+     * @return Record[]
      */
     public function queryAllRows($sql, $class, $params = [])
     {

@@ -1,12 +1,12 @@
 <?php
 namespace app\interfaces;
-use app\models\Model;
+use app\models\Record;
 
-interface IModel
+interface IRecord
 {
     public static function getTableName() : string;
 
-    public static function getOneRow($id) : Model;
+    public static function getOneRow($id);
 
     public static function getAllRows();
 

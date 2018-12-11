@@ -1,7 +1,7 @@
 <?php
 namespace app\models;
 
-class Cart extends Model
+class Cart extends Record
 {
     public $id;
     public $good_id;

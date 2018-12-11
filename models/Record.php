@@ -1,27 +1,25 @@
 <?php
-
 namespace app\models;
 
-use app\interfaces\IModel;
+use app\interfaces\IRecord;
 use app\services\Db;
 
-abstract class Model implements IModel
+abstract class Record implements IRecord
 {
     protected $db;
 
     /**
-     * Model constructor.
+     * Record constructor.
      */
     public function __construct() {
         $this->db = Db::getInstance();
     }
 
-
     /**
      * @param $id
-     * @return Model
+     * @return Record
      */
-    public static function getOneRow($id) : Model
+    public static function getOneRow($id)
     {
         $tableName = static::getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE id = :id";
@@ -31,7 +29,7 @@ abstract class Model implements IModel
 
 
     /**
-     * @return Model[]
+     * @return Record[]
      */
     public static function getAllRows() {
         $tableName = static::getTableName();
@@ -40,10 +38,21 @@ abstract class Model implements IModel
         return Db::getInstance()->queryAllRows($sql, get_called_class());
     }
 
-    public function save() {
-        // TODO: Implement save() method.
+    public function save()
+    {
+        $id = $this->id;
+        if($id) {
+            if(static::getOneRow($id)) {
+                $this->update();
+            }
+            else {
+                $this->insert();
+            }
+        }
+        else {
+            $this->insert();
+        }
     }
-
 
     /**
      * @return int
@@ -54,8 +63,9 @@ abstract class Model implements IModel
         $fields = [];
         $placeholders = [];
         $params = [];
+
         foreach ($this as $key => $value) {
-            if($key != 'db') {
+            if(is_scalar($value)) {
                 $fields[] = $key;
                 $placeholders[] = '?';
                 $params[] = $value;
@@ -67,28 +77,30 @@ abstract class Model implements IModel
 
         $sql = "INSERT INTO {$tableName} ($fields) VALUES($placeholders)";
 
-        return $this->db->execute($sql, $params);
+       return $this->db->execute($sql, $params);
     }
 
     /**
-     * @param $data
      * @return int
      */
-    public function update() {
+    public function update()
+    {
         $tableName = static::getTableName();
+        $placeholders = [];
+        $params = [];
 
-        $placeholder = [];
-        /*foreach ($data as $key => $value) {
-            $placeholder[] = $key . ' = ?';
+        foreach ($this as $key => $value) {
+            if(is_scalar($value) && $key != 'id') {
+                $placeholders[] = $key . ' = ?';
+                $params[] = $value;
+            }
         }
-        $placeholder = implode(', ', $placeholder);
-
-        $sql = "UPDATE {$tableName} SET $placeholder WHERE id = ?";
-
-        $params = array_values($data);
         $params[] = $this->id;
 
-        return $this->db->execute($sql, $params);*/
+        $placeholders = implode(', ', $placeholders);
+        $sql = "UPDATE {$tableName} SET $placeholders WHERE id = ?";
+
+        return $this->db->execute($sql, $params);
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
 namespace app\models;
 
-class Good extends Model {
+class Good extends Record {
     public $id;
     public $name;
     public $description;
