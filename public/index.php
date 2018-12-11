@@ -4,10 +4,12 @@ include ROOT_DIR . "services/Autoloader.php";
 
 spl_autoload_register([new \app\services\Autoloader(), 'loadClass']);
 
-$good1 = \app\models\Good::getOneRow(6);
+$controllerName = $_GET['c']?:DEFAULT_CONTROLLER;
+$actionName = $_GET['a'];
 
-$user1 = new \app\models\User();
-
-$cart1 = new \app\models\Cart();
-
-$category1 = new \app\models\Category();
+$controllerClass = CONTROLLERS_NAMESPACE . ucfirst($controllerName) . "Controller";
+if(class_exists($controllerClass)) {
+    /** @var \app\controllers\GoodController $controller */
+    $controller = new $controllerClass;
+    $controller->runAction($actionName);
+}
