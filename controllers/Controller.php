@@ -11,22 +11,27 @@ use app\services\renderers\IRenderer;
  */
 abstract class Controller
 {
+    protected $renderer;
+
     protected $action;
     protected $defaultAction = "index";
-    protected $useLayout = true;
+    protected $useLayout;
     protected $layout = 'main';
-
-    protected $renderer;
 
     /**
      * Controller constructor.
+     * @param bool $useLayout
      * @param $renderer
      */
-    public function __construct(IRenderer $renderer) {
+    public function __construct(IRenderer $renderer, bool $useLayout = true) {
+        $this->useLayout = $useLayout;
         $this->renderer = $renderer;
     }
 
-    public function runAction($action = null)
+    /**
+     * @param $action
+     */
+    public function runAction( $action = null)
     {
         $this->action = $action?: $this->defaultAction;
         $method = "action" . ucfirst($this->action);

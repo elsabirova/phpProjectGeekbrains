@@ -1,9 +1,12 @@
-<h1>Catalog</h1>
-<p>
-    {% for good in goods %}
-    <h3>{{ good.name }}</h3>
-    <p>{{ good.description }}</p>
-    <p>{{ good.price }}</p>
-    <button>Buy</button>
-    {% endfor %}
-</p>
+{% extends 'layouts/main.html' %}
+{% block content %}
+    <h1>Catalog</h1>
+    <p>
+        {% for good in goods %}
+        <h3>{{ good.name }}</h3>
+        <p>{{ good.description }}</p>
+        <p>{{ good.price }}</p>
+        <button>Buy</button>
+        {% endfor %}
+    </p>
+{% endblock %}
