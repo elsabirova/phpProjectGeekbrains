@@ -12,7 +12,7 @@ $controllerClass = CONTROLLERS_NAMESPACE . ucfirst($controllerName) . "Controlle
 if(class_exists($controllerClass)) {
     /** @var \app\controllers\GoodController $controller */
     $controller = new $controllerClass(
-        new \app\services\renderers\TemplateRenderer()
+        new \app\services\renderers\TwigRenderer()
     );
     $controller->runAction($actionName);
 }
