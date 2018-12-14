@@ -10,6 +10,9 @@ $actionName = $_GET['a'];
 $controllerClass = CONTROLLERS_NAMESPACE . ucfirst($controllerName) . "Controller";
 if(class_exists($controllerClass)) {
     /** @var \app\controllers\GoodController $controller */
-    $controller = new $controllerClass;
+    $controller = new $controllerClass(
+        new \app\services\renderers\TemplateRenderer()
+    );
     $controller->runAction($actionName);
 }
+

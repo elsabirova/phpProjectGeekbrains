@@ -1,12 +1,30 @@
 <?php
 namespace app\controllers;
 
+use app\services\renderers\IRenderer;
+
+/**
+ * Class Controller управляет запросами пользователя (получаемые в виде запросов HTTP GET или POST).
+ * Его основная функция — вызывать и координировать действие необходимых ресурсов и объектов, нужных для выполнения действий,
+ * задаваемых пользователем. Контроллер вызывает соответствующую модель для задачи и выбирает подходящий вид.
+ * @package app\controllers
+ */
 abstract class Controller
 {
     protected $action;
     protected $defaultAction = "index";
     protected $useLayout = true;
     protected $layout = 'main';
+
+    protected $renderer;
+
+    /**
+     * Controller constructor.
+     * @param $renderer
+     */
+    public function __construct(IRenderer $renderer) {
+        $this->renderer = $renderer;
+    }
 
     public function runAction($action = null)
     {
@@ -20,6 +38,11 @@ abstract class Controller
         }
     }
 
+    /**
+     * @param $template
+     * @param $params
+     * @return false|string
+     */
     protected function render($template, $params)
     {
         if($this->useLayout) {
@@ -30,12 +53,13 @@ abstract class Controller
         return $this->renderTemplate($template, $params);
     }
 
+    /**
+     * @param $template
+     * @param $params
+     * @return false|string
+     */
     protected function renderTemplate($template, $params)
     {
-        ob_start();
-        extract($params);
-        $templatePath = TEMPLATES_DIR . $template . '.php';
-        include $templatePath;
-        return ob_get_clean();
+        return $this->renderer->render($template, $params);
     }
 }
