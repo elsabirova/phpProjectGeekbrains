@@ -1,6 +1,7 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT'] . "/../config/config.php";
 include ROOT_DIR . "services/Autoloader.php";
+require_once ROOT_DIR . "vendor/autoload.php";
 
 spl_autoload_register([new \app\services\Autoloader(), 'loadClass']);
 
@@ -15,4 +16,3 @@ if(class_exists($controllerClass)) {
     );
     $controller->runAction($actionName);
 }
-
