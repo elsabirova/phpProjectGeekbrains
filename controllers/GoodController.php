@@ -8,14 +8,13 @@ class GoodController extends Controller
     public function actionIndex()
     {
         $goods = Good::getAllRows();
-        echo $this->render("good/catalog", ['goods' => $goods]);
+        echo $this->render("catalog", ['goods' => $goods]);
     }
 
     public function actionCard()
     {
         $id = $_GET['id'];
         $good = Good::getOneRow($id);
-
-        echo $this->render("good/card", ['good' => $good]);
+        echo $this->render("card", ['good' => $good]);
     }
 }

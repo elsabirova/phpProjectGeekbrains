@@ -10,6 +10,7 @@ if(class_exists($controllerClass)) {
     /** @var \app\controllers\GoodController $controller */
     $controller = new $controllerClass(
         new \app\services\renderers\TwigRenderer(),
+        $controllerName,
         false
     );
     $controller->runAction($actionName);

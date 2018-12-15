@@ -8,6 +8,6 @@ class CartController extends Controller
     public function actionIndex()
     {
         $cart = Cart::getAllRows();
-        echo $this->render("cart/cart", ['cart' => $cart]);
+        echo $this->render("cart", ['cart' => $cart]);
     }
 }

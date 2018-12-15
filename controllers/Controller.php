@@ -13,19 +13,23 @@ abstract class Controller
 {
     protected $renderer;
 
+    protected $controllerName;
     protected $action;
     protected $defaultAction = "index";
     protected $useLayout;
     protected $layout = 'main';
 
+
     /**
      * Controller constructor.
-     * @param bool $useLayout
      * @param $renderer
+     * @param $controllerName
+     * @param $useLayout
      */
-    public function __construct(IRenderer $renderer, bool $useLayout = true) {
-        $this->useLayout = $useLayout;
+    public function __construct(IRenderer $renderer, $controllerName, bool $useLayout = true) {
         $this->renderer = $renderer;
+        $this->controllerName = $controllerName;
+        $this->useLayout = $useLayout;
     }
 
     /**
@@ -50,6 +54,7 @@ abstract class Controller
      */
     protected function render($template, $params)
     {
+        $template = $this->controllerName . '/' . $template;
         if($this->useLayout) {
             $content = $this->renderTemplate($template, $params);
             return $this->renderTemplate("layouts/{$this->layout}", ['content' => $content]);
