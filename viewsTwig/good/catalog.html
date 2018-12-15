@@ -1,12 +1,12 @@
 {% extends 'layouts/main.html' %}
 {% block content %}
     <h1>Catalog</h1>
-    <p>
-        {% for good in goods %}
-        <h3>{{ good.name }}</h3>
-        <p>{{ good.description }}</p>
-        <p>{{ good.price }}</p>
-        <button>Buy</button>
-        {% endfor %}
-    </p>
+    {% for good in goods %}
+        <div>
+            <a href="/?c=good&a=card&id={{ good.id }}">{{ good.name }}</a>
+            <p>{{ good.description }}</p>
+            <p>{{ good.price }}</p>
+            <button>Buy</button>
+        </div>
+    {% endfor %}
 {% endblock %}
