@@ -9,9 +9,9 @@ class TwigRenderer implements IRenderer
      * TwigRenderer constructor.
      */
     public function __construct() {
-        $loader = new \Twig_Loader_Filesystem(TWIG_TEMPLATES_DIR);
+        $loader = new \Twig_Loader_Filesystem(App::call()->config['templatesDirTwig']);
         $this->twig = new \Twig_Environment($loader, array(
-            'cache' => CACHE_DIR,
+            'cache' => App::call()->config['cacheDir'],
         ));
     }
 

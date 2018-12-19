@@ -1,9 +1,9 @@
 <?php
 namespace app\models\repositories;
 
+use app\base\App;
 use app\interfaces\IRepository;
 use app\models\Record;
-use app\services\Db;
 
 abstract class Repository implements IRepository
 {
@@ -16,16 +16,15 @@ abstract class Repository implements IRepository
         $this->db = static::getDb();
     }
 
-    public function getDb(){
-        return Db::getInstance();
+    public function getDb() {
+        return App::call()->db;
     }
 
     /**
      * @param $id
      * @return Record
      */
-    public function getOneRow($id)
-    {
+    public function getOneRow($id) {
         $tableName = static::getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE id = :id";
 
@@ -46,12 +45,10 @@ abstract class Repository implements IRepository
     /**
      * @param Record $record
      */
-    public function save(Record $record)
-    {
-        if($record->id && static::getOneRow($record->id)) {
+    public function save(Record $record) {
+        if ($record->id && static::getOneRow($record->id)) {
             $this->update($record);
-        }
-        else {
+        } else {
             $this->insert($record);
         }
     }
@@ -60,15 +57,14 @@ abstract class Repository implements IRepository
      * @param Record $record
      * @return int
      */
-    public function insert(Record $record)
-    {
+    public function insert(Record $record) {
         $tableName = static::getTableName();
         $fields = [];
         $placeholders = [];
         $params = [];
 
         foreach ($this as $key => $value) {
-            if(is_scalar($value)) {
+            if (is_scalar($value)) {
                 $fields[] = $key;
                 $placeholders[] = '?';
                 $params[] = $value;
@@ -87,14 +83,13 @@ abstract class Repository implements IRepository
      * @param Record $record
      * @return int
      */
-    public function update(Record $record)
-    {
+    public function update(Record $record) {
         $tableName = static::getTableName();
         $placeholders = [];
         $params = [];
 
         foreach ($this as $key => $value) {
-            if(is_scalar($value) && $key != 'id') {
+            if (is_scalar($value) && $key != 'id') {
                 $placeholders[] = $key . ' = ?';
                 $params[] = $value;
             }

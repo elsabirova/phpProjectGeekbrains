@@ -1,8 +1,8 @@
 <?php
 namespace app\controllers;
 
+use app\base\App;
 use app\models\repositories\GoodRepository;
-use app\services\Request;
 
 class GoodController extends Controller
 {
@@ -14,7 +14,7 @@ class GoodController extends Controller
 
     public function actionCard()
     {
-        $id = (new Request())->getParam('id');
+        $id = App::call()->request->getParam('id');
         $good = (new GoodRepository())->getOneRow($id);
         echo $this->render("card", ['good' => $good]);
     }
