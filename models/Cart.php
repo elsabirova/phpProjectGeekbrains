@@ -5,10 +5,15 @@ class Cart extends Record
 {
     public $id;
     public $good_id;
-    public $customer_id;
+    public $session_id;
+    public $quantity;
+    public $user_id;
 
-    public static function getTableName() : string
-    {
-        return "cart";
+    public function __construct($id = null, $good_id = null, $session_id = null, $quantity = null, $user_id = null) {
+        $this->id = $id;
+        $this->good_id = $good_id;
+        $this->session_id = $session_id;
+        $this->quantity = $quantity;
+        $this->user_id = $user_id;
     }
 }

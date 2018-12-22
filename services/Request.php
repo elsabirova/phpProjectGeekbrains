@@ -9,6 +9,7 @@ class Request
     private $params;
     private $requestMethod;
     private $isAjax = false;
+    private $isPost = false;
 
     /**
      * Request constructor.
@@ -17,8 +18,7 @@ class Request
         $this->requestString = $_SERVER['REQUEST_URI'];
         $this->parseRequest();
         $this->requestMethod = $_SERVER['REQUEST_METHOD'];
-        if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
             $this->isAjax = true;
         }
     }
@@ -57,4 +57,15 @@ class Request
     {
         return $this->requestMethod;
     }
+
+    public function isAjax()
+    {
+        return $this->isAjax;
+    }
+
+    public function isPost()
+    {
+        return ($this->requestMethod == 'POST');
+    }
+
 }

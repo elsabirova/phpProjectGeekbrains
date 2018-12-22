@@ -1,6 +1,8 @@
 <?php
 namespace app\controllers;
 
+use app\base\App;
+use app\interfaces\IRepository;
 use app\services\renderers\IRenderer;
 
 /**
@@ -11,7 +13,7 @@ use app\services\renderers\IRenderer;
  */
 abstract class Controller
 {
-    protected $renderer;
+    protected $repository;
 
     protected $controllerName;
     protected $action;
@@ -19,15 +21,8 @@ abstract class Controller
     protected $useLayout;
     protected $layout = 'main';
 
-
-    /**
-     * Controller constructor.
-     * @param $renderer
-     * @param $controllerName
-     * @param $useLayout
-     */
-    public function __construct(IRenderer $renderer, $controllerName, bool $useLayout = true) {
-        $this->renderer = $renderer;
+    public function __construct(IRepository $repository, $controllerName, bool $useLayout = true) {
+        $this->repository = $repository;
         $this->controllerName = $controllerName;
         $this->useLayout = $useLayout;
     }
@@ -70,6 +65,6 @@ abstract class Controller
      */
     protected function renderTemplate($template, $params)
     {
-        return $this->renderer->render($template, $params);
+        return App::call()->renderer->render($template, $params);
     }
 }

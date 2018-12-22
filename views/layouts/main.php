@@ -8,10 +8,12 @@
     <title>Document</title>
     <link rel="stylesheet" href="/css/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/js/cart.js"></script>
 </head>
 <body>
-<div class="header">Это хедер
-    <a href="/cart"> Корзина</a>
+<div class="header">
+    <a href="/cart"> Cart</a>
+    <a href="/"> Catalog</a>
 </div>
 <div class="content"><?=$content?></div>
 <div class="footer">Это футер</div>

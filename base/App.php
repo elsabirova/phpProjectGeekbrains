@@ -25,15 +25,24 @@ class App
         $controllerName = $this->request->getControllerName() ?: $this->config['defaultController'];
         $actionName = $this->request->getActionName();
 
-        $controllerClass = $this->config['controllerNamespace'] . ucfirst($controllerName) . 'Controller';
+        $controllerClass = $this->getControllerClass($controllerName);
         if (class_exists($controllerClass)) {
             /** @var \app\controllers\GoodController $controller */
+            $repositoryClass = $this->getRepositoryClass($controllerName);
             $controller = new $controllerClass(
-                new \app\services\renderers\TemplateRenderer(),
+                new $repositoryClass(),
                 $controllerName
             );
             $controller->runAction($actionName);
         }
+    }
+
+    public function getControllerClass($controllerName) {
+        return  $this->config['controllerNamespace'] . ucfirst($controllerName) . 'Controller';
+    }
+
+    public function getRepositoryClass($controllerName) {
+        return  $this->config['repositoryNamespace'] . ucfirst($controllerName) . 'Repository';
     }
 
     public function createComponent($name) {

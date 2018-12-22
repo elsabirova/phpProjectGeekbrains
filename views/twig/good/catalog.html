@@ -3,7 +3,7 @@
     <h1>Catalog</h1>
     {% for good in goods %}
         <div>
-            <a href="/?c=good&a=card&id={{ good.id }}">{{ good.name }}</a>
+            <a href="/good/card?id={{ good.id }}">{{ good.name }}</a>
             <p>{{ good.description }}</p>
             <p>{{ good.price }}</p>
             <button>Buy</button>

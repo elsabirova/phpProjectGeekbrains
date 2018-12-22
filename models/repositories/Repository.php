@@ -31,7 +31,6 @@ abstract class Repository implements IRepository
         return $this->db->queryObject($sql, $this->getEntityClass(), [':id' => $id]);
     }
 
-
     /**
      * @return Record[]
      */
@@ -44,12 +43,13 @@ abstract class Repository implements IRepository
 
     /**
      * @param Record $record
+     * @return int
      */
     public function save(Record $record) {
-        if ($record->id && static::getOneRow($record->id)) {
-            $this->update($record);
+        if (is_null($record->id)) {
+            return $this->insert($record);
         } else {
-            $this->insert($record);
+            return $this->update($record);
         }
     }
 
@@ -63,7 +63,7 @@ abstract class Repository implements IRepository
         $placeholders = [];
         $params = [];
 
-        foreach ($this as $key => $value) {
+        foreach ($record as $key => $value) {
             if (is_scalar($value)) {
                 $fields[] = $key;
                 $placeholders[] = '?';
@@ -88,7 +88,7 @@ abstract class Repository implements IRepository
         $placeholders = [];
         $params = [];
 
-        foreach ($this as $key => $value) {
+        foreach ($record as $key => $value) {
             if (is_scalar($value) && $key != 'id') {
                 $placeholders[] = $key . ' = ?';
                 $params[] = $value;
@@ -102,14 +102,10 @@ abstract class Repository implements IRepository
         return $this->db->execute($sql, $params);
     }
 
-    /**
-     * @param Record $record
-     * @return int
-     */
-    public function delete(Record $record) {
+    public function delete($id) {
         $tableName = $this->getTableName();
         $sql = "DELETE FROM {$tableName} WHERE id=:id";
 
-        return $this->db->execute($sql, [':id' => $record->id]);
+        return $this->db->execute($sql, [':id' => $id]);
     }
 }

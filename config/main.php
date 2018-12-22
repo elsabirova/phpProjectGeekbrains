@@ -5,7 +5,8 @@ return [
     'templatesDirTwig' => __DIR__ . '/../views/twig',
     'cacheDir' => __DIR__ . '/../cache',
     'defaultController' => 'good',
-    'controllerNamespace' => "app\controllers\\",
+    'controllerNamespace' => 'app\controllers\\',
+    'repositoryNamespace' => 'app\models\repositories\\',
     'components' => [
         'db' => [
             'class' => \app\services\Db::class,
@@ -21,6 +22,9 @@ return [
         ],
         'renderer' => [
             'class' => \app\services\renderers\TemplateRenderer::class
+        ],
+        'session' => [
+            'class' => \app\services\Session::class
         ]
     ]
 ];

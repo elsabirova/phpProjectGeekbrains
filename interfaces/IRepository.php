@@ -18,5 +18,5 @@ interface IRepository
 
     public function update(Record $record);
 
-    public function delete(Record $record);
+    public function delete($id);
 }

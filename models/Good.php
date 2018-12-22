@@ -1,7 +1,8 @@
 <?php
 namespace app\models;
 
-class Good extends Record {
+class Good extends Record
+{
     public $id;
     public $name;
     public $description;
@@ -9,15 +10,6 @@ class Good extends Record {
     public $img;
     public $category_id;
 
-    /**
-     * Good constructor.
-     * @param $id
-     * @param $name
-     * @param $description
-     * @param $price
-     * @param $img
-     * @param $category_id
-     */
     public function __construct($id = null, $name = null, $description = null, $price = null, $img = null, $category_id = null)
     {
         $this->id = $id;

@@ -105,4 +105,10 @@ class Db
         $pdoStatement = $this->query($sql, $params);
         return $pdoStatement->fetchAll(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $class);
     }
+
+    public function queryArray($sql, $params = []) {
+        $pdoStatement = $this->query($sql, $params);
+
+        return $pdoStatement->fetch();
+    }
 }
